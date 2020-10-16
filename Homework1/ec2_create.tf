@@ -52,7 +52,7 @@ resource "aws_instance"  "opsschool_ec2" {
     vpc_security_group_ids = [aws_security_group.allow_ssh.id]
     
     tags = {
-    Name  = "My_opsschool"
+    Name  = "nginx-${count.index}"
     Owner = "Maxim"
     Porpuse = "Learning"
   }
