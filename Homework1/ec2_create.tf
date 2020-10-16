@@ -8,7 +8,7 @@ variable "region" {
 
 # provider
 provider "aws" {
-    profile =  "default"
+    profile =  "terraform"
     region =  var.region
 }   
 
