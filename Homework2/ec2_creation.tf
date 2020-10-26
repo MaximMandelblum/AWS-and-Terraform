@@ -1,6 +1,7 @@
 
 
-# VPC config
+# VPC Creation
+
 resource "aws_vpc"  "vpc_main" {
 
   cidr_block =  var.cidr_network 
@@ -10,7 +11,8 @@ resource "aws_vpc"  "vpc_main" {
   }
 
 }
-# Internet Gateway Config
+# Internet Gateway Creation
+
 resource "aws_internet_gateway"  "vpc_igw" {
 
   vpc_id = aws_vpc.vpc_main.id
@@ -19,25 +21,9 @@ resource "aws_internet_gateway"  "vpc_igw" {
   }  
 }
 
-#Nat Gateway 
 
-resource "aws_eip" "ip_nat"{
-  vpc = "true"
-  count = 2 
-}
+# Subnets configuration 
 
-resource "aws_nat_gateway" "gw_nat" {
-  count = 2
-  allocation_id = aws_eip.ip_nat[count.index].id
-
-  subnet_id = aws_subnet.public_subnet[count.index].id
-
-  tags = {
-    Name = "MyNAT"
-  }
-}
-
-# Subnets config
 resource "aws_subnet"  "public_subnet" {
   count = 2
   cidr_block = var.subnet1_public[count.index]
@@ -61,7 +47,7 @@ resource "aws_subnet"  "private_subnet" {
   }
 }
 
-# Routing IGW
+# Routing IGW Configuration
 
 resource "aws_route_table" "rt_public"{
   count = 2
@@ -81,7 +67,28 @@ resource "aws_route_table_association" "rta-subnet1-public" {
   route_table_id = aws_route_table.rt_public[count.index].id 
 }
 
-#Routing Nat
+
+#Nat Gateway Creation
+
+resource "aws_eip" "ip_nat"{
+  vpc = "true"
+  count = 2 
+}
+
+resource "aws_nat_gateway" "gw_nat" {
+  count = 2
+  allocation_id = aws_eip.ip_nat[count.index].id
+  subnet_id = aws_subnet.public_subnet[count.index].id
+  depends_on    = [aws_internet_gateway.vpc_igw]
+
+
+
+  tags = {
+    Name = "MyNAT"
+  }
+}
+
+#Routing Nat Configurationm
 
 resource "aws_route_table" "rt_private"{
   vpc_id = aws_vpc.vpc_main.id
@@ -99,7 +106,7 @@ resource "aws_route_table_association" "rta-subnet2-private" {
   route_table_id = aws_route_table.rt_private[count.index].id 
 }
 
-#security Groups 
+#Security Groups 
 
 resource "aws_security_group" "allow_ssh" {
     name = "ngnix_ops"
@@ -127,7 +134,7 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 ##########################################
-### INSTANCES ###
+### INSTANCES WEB ###
 ##########################################
 
 resource "aws_instance" "web" {
@@ -147,6 +154,9 @@ resource "aws_instance" "web" {
 
 }
 
+##########################################
+### INSTANCES DB ###
+##########################################
 
 resource "aws_instance" "db" {
   count                       = 2
@@ -163,4 +173,40 @@ resource "aws_instance" "db" {
   }
 }
 
+# Load Balancer
 
+resource "aws_elb" "web" {
+  name = "web-ngnix" 
+  subnets = [aws_subnet.public_subnet[0].id, aws_subnet.public_subnet[1].id]
+  security_groups = [aws_security_group.allow_ssh.id]
+
+
+  listener {
+    instance_port     = 80
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:80/"
+    interval            = 30
+  }
+  
+  instances                   = aws_instance.web.*.id
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+  
+
+}
+
+#Public ELB DNS Name 
+
+output "aws_elb_public_dns" {
+  value = aws_elb.web.dns_name
+}
