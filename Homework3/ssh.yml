@@ -1,0 +1,42 @@
+- name: generate SSH key
+  hosts: 127.0.0.1
+  connection: local
+  vars:
+    ssh_key_filename: id_rsa_opsschool
+  tasks:
+    - name: generate SSH key "{{ssh_key_filename}}"
+      openssh_keypair:
+        path: "~/.ssh/{{ssh_key_filename}}"
+        type: rsa
+        size: 4096
+        state: present
+        force: no
+   
+- name:
+  hosts: web
+  remote_user: ubuntu
+  become: yes
+  tasks:
+    - name: add user
+      shell: sudo usermod -aG sudo maxim
+
+
+    - name: Create .ssh folder
+      file:
+        path: /home/maxim/.ssh
+        state: directory
+        owner: maxim
+        group: admin
+        mode: 0700
+    - name: create empty file
+      file:
+        path: /home/maxim/.ssh/authorized_keys
+        state: touch     
+
+    - name: Set authorized key took from file
+      authorized_key:
+         user: maxim
+         state: present
+         key: "{{item}}"
+      with_file:
+         - /home/ubuntu/.ssh/id_rsa_opsschool.pub
