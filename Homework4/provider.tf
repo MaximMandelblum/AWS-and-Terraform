@@ -1,4 +1,4 @@
 provider "aws" {
-  profile = "default"
+  profile = "imperva"
   region     = var.aws_region
 }
