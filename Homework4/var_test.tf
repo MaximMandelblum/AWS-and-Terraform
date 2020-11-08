@@ -8,7 +8,7 @@ variable "ubuntu_account_number" {
 }
 
 variable "key_name" {
-  default = "max_terraform"
+  default = "max_imperva"
   type = string
 }
 
