@@ -96,6 +96,15 @@ connection_draining_timeout = 400
 
 }
 
+#stickiness for 1 min on web server that managed by LB
+resource "aws_lb_cookie_stickiness_policy" "lb_stickiness" {
+  name                     = "webservers-stickiness"
+  load_balancer            = aws_elb.web.id
+  lb_port                  = 80
+  cookie_expiration_period = 60
+}
+
+
 #Public ELB DNS Name
 
 output "aws_elb_public_dns" {
