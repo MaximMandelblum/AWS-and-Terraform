@@ -35,6 +35,7 @@ count = 2
 ami = data.aws_ami.ubuntu-18.id
 instance_type = "t2.micro"
 key_name = var.key_name
+iam_instance_profile = "access_s3"
 subnet_id = module.vpc.public_subnet_ids[count.index]
 associate_public_ip_address = true
 vpc_security_group_ids = [aws_security_group.allow_ssh.id]
