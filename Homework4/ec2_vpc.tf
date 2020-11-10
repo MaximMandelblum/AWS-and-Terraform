@@ -26,6 +26,15 @@ resource "aws_security_group" "allow_ssh" {
     }
 }
 
+#S3 bucket creation for copy access log 
+
+resource "aws_s3_bucket" "maxim_vpc_access" {
+  bucket = "maxim_vpc_access"
+  versioning {
+    enabled = true
+  }
+}
+
 ##########################################
 ### INSTANCES WEB ###
 ##########################################
