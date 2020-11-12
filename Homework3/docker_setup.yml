@@ -54,8 +54,11 @@
           notify:
                 - Restart Docker
 
-        - name: add user
-          shell: sudo usermod -aG docker ubuntu
+        - name: Create default finbot user
+          user:
+                name: docker
+                groups: ubuntu
+                state: present
 
         - name: docker ngnix run
           shell: docker run -d -p 8080:80 nginx
