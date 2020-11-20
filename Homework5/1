@@ -1,0 +1,19 @@
+- name: opsschool playbook ubuntu
+  hosts: ubuntu
+  remote_user: ubuntu
+  become: yes
+  tasks: 
+         - include: roles/docker/tasks/ubuntu.yml
+  handlers:
+         - include : roles/docker/handlers/main.yml
+
+
+- name: oppschool playbok redhat
+  hosts: redhat
+  remote_uaser: ec2_user
+  become : yes
+  tasks:
+          
+         - include: roles/docker/tasks/redhat.yml
+  handlers:
+         - inclde : roles/docker/handlers/main.yml

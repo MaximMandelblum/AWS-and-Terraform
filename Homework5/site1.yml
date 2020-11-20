@@ -1,0 +1,13 @@
+- name: opsschool playbook ubuntu
+  hosts: ubuntu
+  remote_user: ubuntu
+  become: yes
+  roles:
+      - docker
+
+- name: opsschool playbook redhat
+  hosts: redhat
+  remote_user: ec2-user
+  become: yes
+  roles:
+      - docker
