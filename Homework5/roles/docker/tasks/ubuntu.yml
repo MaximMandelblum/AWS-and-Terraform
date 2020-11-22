@@ -45,11 +45,11 @@
   notify:
           - Restart Docker
 
-- name: Create default docker user
+- name: Add ubuntu user to docker group
   user:
-          name: docker
-          groups: ubuntu
-          state: present
+    name: "{{ item }}"
+    group: docker
+  with_items: "{{ debain_users }}"
 
 - name: install docker-py
   pip:

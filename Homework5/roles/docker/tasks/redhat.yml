@@ -38,6 +38,12 @@
     enabled: yes
   become: yes
 
+- name: Add ec2-user user to docker group
+  user:
+    name: "{{ item }}"
+    group: docker
+  with_items: "{{ redhat_users }}"
+
 - name : install docker-py
   pip: 
         name: docker-py
