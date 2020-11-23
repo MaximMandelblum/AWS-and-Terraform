@@ -4,6 +4,12 @@
   become: yes
   roles:
       - docker
+  vars_prompt:
+  - name: version
+    prompt: "What is docker version you want to install? The default will be:"
+    private: no
+    default: "5:18.09.0~3-0~ubuntu-bionic"
+  
 
 - name: opsschool playbook redhat
   hosts: redhat
@@ -11,3 +17,8 @@
   become: yes
   roles:
       - docker
+  vars_prompt:
+  - name: version
+    prompt: "What is docker version you want to install? The default will be:"
+    private: no
+    default: "3:19.03.13-3.el8"
