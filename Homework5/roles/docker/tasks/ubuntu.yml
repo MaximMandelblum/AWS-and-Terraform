@@ -38,11 +38,11 @@
       state: latest
 
 - name: Install Docker
-  package: 
-    name:
-    - "docker-ce={{version}}"
-    - "docker-ce-cli={{version}}"
-    - containerd.io
+  package:
+    name: Install Ububntu Docker
+          - "docker-ce={{version}}"
+          - "docker-ce-cli={{version}}"
+          - containerd.io
     state: present
   become: yes
   notify: 
