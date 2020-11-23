@@ -37,16 +37,16 @@
       name: "*"
       state: latest
 
-- name : Install Docker
-  apt:
-          name: 
-            - "docker-ce={{version}}"
-            - "docker-ce=cli-{{version}}"
-            - "containerd.io"
-          state: present
-          update_cache : yes
-  notify:
-          - Restart Docker
+- name: Install Docker
+  package: 
+    name:
+    - "docker-ce={{version}}"
+    - "docker-ce-cli={{version}}"
+    - containerd.io
+    state: present
+  become: yes
+  notify: 
+  - Restart docker
 
 - name: Add ubuntu user to docker group
   user:
