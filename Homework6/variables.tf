@@ -17,13 +17,13 @@ variable "ami" {
 
 }
 
-variable "instances_server_number" {
+variable "instance_server_number" {
   description = "Number of ec2 needed"
   default = 3
   type = string
 }
 
-variable "instances_agent_number" {
+variable "instance_agent_number" {
   description = "Number of ec2 needed"
   default = 1
   type = string
