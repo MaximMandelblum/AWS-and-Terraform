@@ -5,7 +5,9 @@ variable "region" {
 
 variable "key_name" {
   description = "name of ssh key to attach to hosts"
+  default = "max_imperva"
 }
+
 
 variable "ami" {
   description = "ami (ubuntu 18) to use - based on region"
@@ -15,9 +17,15 @@ variable "ami" {
 
 }
 
-variable "instances_number" {
+variable "instances_server_number" {
   description = "Number of ec2 needed"
   default = 3
+  type = string
+}
+
+variable "instances_agent_number" {
+  description = "Number of ec2 needed"
+  default = 1
   type = string
 }
 
@@ -28,5 +36,5 @@ variable "cidr_network" {
 
 variable "consul_public" {
 
-    default = ["10.0.1.0/24"]
+    default = "10.0.1.0/24"
 }
