@@ -40,7 +40,7 @@ resource "aws_s3_bucket" "maxim_vpc_access" {
 ##########################################
 
 resource "aws_instance" "web" {
-count = 2
+count = var.instance_number
 ami = data.aws_ami.ubuntu-18.id
 instance_type = "t2.micro"
 key_name = var.key_name
@@ -62,7 +62,7 @@ Porpuse = "Learning"
 ##########################################
 
 resource "aws_instance" "db" {
-count = 2
+count = var.instance_number
 ami = data.aws_ami.ubuntu-18.id
 instance_type = "t2.micro"
 key_name = var.key_name
