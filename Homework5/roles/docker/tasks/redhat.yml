@@ -3,11 +3,7 @@
     name: "{{item}}"
     state: latest
     update_cache: yes
-  with_items:
-                 - yum-utils
-                 - device-mapper-persistent-data
-                 - lvm2
-                 - python3-pip
+  with_items: "{{redhat_pkg}}"
 
 - name: Add Docker repo
   get_url:
