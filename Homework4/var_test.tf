@@ -20,3 +20,8 @@ variable "instance_type" {
 }
 
 variable "private_key_path" {}
+
+variable "instance_number" {
+  description = " number of needed instances to build "
+  type        = string
+  default     = 2 
