@@ -1,0 +1,7 @@
+node { ("linux1")
+    stage("enabled") {
+        stage('deploy'){
+            sh "docker run -t -d --rm training/webapp:latest"
+            }
+        }
+    }
