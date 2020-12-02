@@ -1,5 +1,5 @@
-node { ("linux1")
-    stage("enabled") {
+node ("linux1") { 
+    stage("docker install") {
         stage('deploy'){
             sh "docker run -t -d --rm training/webapp:latest"
             }
