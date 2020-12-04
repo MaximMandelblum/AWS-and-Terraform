@@ -1,2 +1,6 @@
 ---
 # vars file for docker
+debian_users: [ubuntu, max, guest]
+redhat_users: [ec2-user, max1, guest1]
+redhat_pkg: [yum-utils, device-mapper-persistent-data, lvm2, python3-pip]
+ubuntu_pkg: [apt-transport-https, ca-certificates, curl, software-properties-common, python3-pip, virtualenv, python3-setuptools]

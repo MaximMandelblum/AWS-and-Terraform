@@ -2,11 +2,8 @@
   yum:
     name: "{{item}}"
     state: latest
-  with_items:
-                 - yum-utils
-                 - device-mapper-persistent-data
-                 - lvm2
-                 - python3-pip
+    update_cache: yes
+  with_items: "{{redhat_pkg}}"
 
 - name: Add Docker repo
   get_url:

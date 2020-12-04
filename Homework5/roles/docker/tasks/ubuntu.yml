@@ -1,22 +1,10 @@
-- name: update package
-  apt:
-      name: "*"
-      state: latest
-
 - name: Install required system packages
   apt:
       name: "{{item}}"
       state: latest
       update_cache: yes
-  with_items :
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-          - python3-pip
-          - virtualenv
-          - python3-setuptools
-
+  with_items : "{{ubuntu_pkg}}"
+    
 - name: Add Docker GPG apt Key
   apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
